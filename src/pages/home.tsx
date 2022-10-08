@@ -1,22 +1,66 @@
+import axios from "axios";
+import { decode, verify } from "jsonwebtoken";
+import { GetServerSideProps } from "next";
 import React, { FormEvent, useState } from "react";
 import DashBoard from "../components/DashBoard";
 import Messages from "../components/Messages";
 import NavBar from "../components/NavBar";
 
-const home = () => {
-  const name = "Sahil";
+interface User {
+  email: string;
+  name: string;
+  phone: number;
+  sessions: [
+    {
+      id: number;
+      login: string;
+      logout: string | null;
+      messages: [{ id: number; message: string }];
+      usersEmail: string;
+    }
+  ];
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { token } = context.req.cookies;
+  if (token) {
+    try {
+      verify(token, process.env.JWT_SECRET!);
+      const user = decode(token);
+      return {
+        props: { user },
+      };
+    } catch (e) {
+      return { redirect: { destination: "/login", permanent: false } };
+    }
+  } else {
+    return { redirect: { destination: "/login", permanent: false } };
+  }
+};
+
+const home = ({ user }: { user: User }) => {
+  console.log(user);
+  const aggregateMsgs: string[] = [];
+  user.sessions.map((s) =>
+    s.messages.map((m) => aggregateMsgs.push(m.message))
+  );
+  const name = user.name;
   const [msg, setMsg] = useState("");
-  const [msgs, setMsgs] = useState<string[]>([]);
-  const handleSubmit = (e: FormEvent) => {
+  const [msgs, setMsgs] = useState<string[]>(aggregateMsgs);
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (msg.trim() !== "") {
-      setMsgs([msg, ...msgs]);
-      setMsg("");
+      let response = await axios.post("/api/messages", { msg: msg });
+      console.log(response.data);
+      if (response.data.message === "success") {
+        setMsgs([msg, ...msgs]);
+        setMsg("");
+      }
     }
   };
   return (
     <>
-      <NavBar name="Sahil" />
+      <NavBar name={name} />
       <div className="grid place-items-center">
         <form className="space-x-4" onSubmit={handleSubmit}>
           <input
@@ -34,28 +78,7 @@ const home = () => {
         <Messages messages={msgs} />
         <div className="my-4 h-2 w-full bg-indigo-600"></div>
 
-        <DashBoard
-          session={[
-            {
-              login: new Date(),
-              messages: ["", ""],
-              user: "Sahil",
-              logout: new Date(new Date().getTime() + 100000),
-            },
-            {
-              login: new Date(),
-              messages: ["", ""],
-              user: "Sahil",
-              logout: new Date(new Date().getTime() + 100000),
-            },
-            {
-              login: new Date(),
-              messages: ["", ""],
-              user: "Sahil",
-              logout: new Date(new Date().getTime() + 100000),
-            },
-          ]}
-        />
+        <DashBoard session={user.sessions} />
       </div>
     </>
   );

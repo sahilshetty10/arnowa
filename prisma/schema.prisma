@@ -10,6 +10,25 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id String @id @default(cuid())
+model Users {
+    email    String     @id
+    name     String
+    phone    Int
+    sessions Sessions[]
+}
+
+model Sessions {
+    id         Int        @id @default(autoincrement())
+    login      DateTime   @default(now())
+    logout     DateTime?
+    Users      Users?     @relation(fields: [usersEmail], references: [email])
+    usersEmail String
+    messages   Messages[]
+}
+
+model Messages {
+    id         Int       @id @default(autoincrement())
+    message    String
+    Sessions   Sessions? @relation(fields: [sessionsId], references: [id])
+    sessionsId Int
 }

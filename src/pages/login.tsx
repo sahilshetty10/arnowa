@@ -1,13 +1,58 @@
+import axios from "axios";
+import { verify } from "jsonwebtoken";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
+import { prisma } from "../server/db/client";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { token } = context.req.cookies;
+  if (token) {
+    try {
+      verify(token, process.env.JWT_SECRET!);
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    } catch (e) {
+      return {
+        props: {},
+      };
+    }
+  }
+  return {
+    props: {},
+  };
+};
 
 const login = () => {
+  const router = useRouter();
   const [isUser, setIsUser] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (isUser) {
+      let response = await axios.post("/api/login", {
+        name: name,
+        email: email,
+        phone: phone,
+      });
+      window.alert(response.data.message);
+      response.data.message === "logged in" && router.push("/home");
+    } else {
+      // code for resgistering new user
+      let response = await axios.post("/api/register", {
+        name: name,
+        email: email,
+        phone: phone,
+      });
+      window.alert(response.data.message);
+    }
     setName("");
     setEmail("");
     setPhone("");
