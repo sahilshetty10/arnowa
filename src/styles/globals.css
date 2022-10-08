@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.btn1{
+    @apply px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold text-center
+}
+.btn2{
+    @apply px-4 py-2 border-2 border-indigo-600 text-indigo-600 rounded-lg font-bold text-center
+}
+th,td{
+    @apply border text-center px-4 font-bold
+}
+th{
+    @apply bg-indigo-600 text-white
+}
+td{
+    @apply text-indigo-600 font-bold
+}
