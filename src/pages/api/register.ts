@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../server/db/client";
-import { sign } from "jsonwebtoken";
-import { serialize } from "cookie";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, phone } = req.body;
