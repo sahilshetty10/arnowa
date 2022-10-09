@@ -31,7 +31,7 @@ export default function Login() {
   const [isUser, setIsUser] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(0);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -54,7 +54,7 @@ export default function Login() {
     }
     setName("");
     setEmail("");
-    setPhone("");
+    setPhone(0);
   };
   return (
     <>
@@ -79,7 +79,7 @@ export default function Login() {
           <input
             className="btn2"
             value={email}
-            type="text"
+            type="email"
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter Email"
             required
@@ -88,8 +88,8 @@ export default function Login() {
           <input
             className="btn2"
             value={phone}
-            type="text"
-            onChange={(e) => setPhone(e.target.value)}
+            type="number"
+            onChange={(e) => setPhone(parseInt(e.target.value))}
             placeholder="Enter Phone"
             required
           />

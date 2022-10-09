@@ -2,6 +2,8 @@
 
 A fullstack app to store messages.
 
+Take a look at the demo app at https://message.sahilshetty.com/
+
 ## Features
 
 - Create users
