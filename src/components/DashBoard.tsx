@@ -9,16 +9,16 @@ interface Session {
 
 const DashBoard = ({ session }: { session: Session[] }) => {
   const getTime = (date: string) => {
-    let time = new Date(date);
+    const time = new Date(date);
     return `${time.getDay()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}`;
   };
 
   const getDuration = (login: string, logout: string | null) => {
     if (logout) {
-      let newLogin = new Date(login);
-      let newLogout = new Date(logout);
-      let duration = (newLogout.getTime() - newLogin.getTime()) / 6000;
-      let durationInMins = `${Math.abs(Math.round(duration))} minutes`;
+      const newLogin = new Date(login);
+      const newLogout = new Date(logout);
+      const duration = (newLogout.getTime() - newLogin.getTime()) / 6000;
+      const durationInMins = `${Math.abs(Math.round(duration))} minutes`;
       return durationInMins;
     } else {
       return "5 minutes";

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React from "react";
 
-const navbar = ({ name }: any) => {
+const NavBar = ({ name }: any) => {
   const router = useRouter();
   const logout = async () => {
     await axios.post("/api/logout");
@@ -18,4 +18,4 @@ const navbar = ({ name }: any) => {
   );
 };
 
-export default navbar;
+export default NavBar;

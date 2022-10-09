@@ -3,7 +3,6 @@ import { verify } from "jsonwebtoken";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
-import { prisma } from "../server/db/client";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { token } = context.req.cookies;
@@ -27,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const login = () => {
+export default function Login() {
   const router = useRouter();
   const [isUser, setIsUser] = useState(true);
   const [name, setName] = useState("");
@@ -37,7 +36,7 @@ const login = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (isUser) {
-      let response = await axios.post("/api/login", {
+      const response = await axios.post("/api/login", {
         name: name,
         email: email,
         phone: phone,
@@ -46,7 +45,7 @@ const login = () => {
       response.data.message === "logged in" && router.push("/home");
     } else {
       // code for resgistering new user
-      let response = await axios.post("/api/register", {
+      const response = await axios.post("/api/register", {
         name: name,
         email: email,
         phone: phone,
@@ -115,6 +114,4 @@ const login = () => {
       </div>
     </>
   );
-};
-
-export default login;
+}

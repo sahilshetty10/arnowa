@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-const home = ({ user }: { user: User }) => {
+export default function Home({ user }: { user: User }) {
   console.log(user);
   const aggregateMsgs: string[] = [];
   user.sessions.map((s) =>
@@ -50,7 +50,7 @@ const home = ({ user }: { user: User }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (msg.trim() !== "") {
-      let response = await axios.post("/api/messages", { msg: msg });
+      const response = await axios.post("/api/messages", { msg: msg });
       console.log(response.data);
       if (response.data.message === "success") {
         setMsgs([msg, ...msgs]);
@@ -82,6 +82,4 @@ const home = ({ user }: { user: User }) => {
       </div>
     </>
   );
-};
-
-export default home;
+}
