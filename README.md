@@ -1,4 +1,4 @@
-# Project Title
+# Messages App
 
 A fullstack app to store messages.
 
