@@ -14,5 +14,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     serialize("token", "", { httpOnly: true, path: "/" }),
     serialize("id", "", { httpOnly: true, path: "/" }),
   ]);
-  res.redirect("/");
+  res.json({message:"logged out. Please sign in again"});
 };
