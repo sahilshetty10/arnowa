@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       verify(token, process.env.JWT_SECRET!);
       return {
         redirect: {
-          destination: "/",
+          destination: "/home",
           permanent: false,
         },
       };
