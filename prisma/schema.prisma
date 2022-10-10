@@ -18,7 +18,7 @@ model Users {
 }
 
 model Sessions {
-    id         Int        @id @default(autoincrement())
+    id         Int        @id @default(sequence())
     login      DateTime   @default(now())
     logout     DateTime?
     Users      Users?     @relation(fields: [usersEmail], references: [email])
@@ -27,7 +27,7 @@ model Sessions {
 }
 
 model Messages {
-    id         Int       @id @default(autoincrement())
+    id         Int       @id @default(sequence())
     message    String
     Sessions   Sessions? @relation(fields: [sessionsId], references: [id])
     sessionsId Int
