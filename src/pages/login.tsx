@@ -58,7 +58,7 @@ export default function Login() {
   };
   return (
     <>
-      <div className="flex h-[80vh] flex-col items-center justify-center">
+      <div className="flex p-4 h-[80vh] flex-col items-center justify-center">
         <h1 className="mb-4 text-center text-3xl font-bold text-indigo-600">
           Please login
         </h1>
